@@ -3,14 +3,17 @@ import { Task } from '../types/Task';
 
 
 interface TaskFormProps {
-    task?: Task;
+    task: Task | null;
     onSave: (task: Task) => void;
 }
-//asdad
+
 const TaskForm: React.FC<TaskFormProps> = ({ task, onSave }) => {
-    const [title, setTitle] = useState(task?.title || '');
-    const [description, setDescription] = useState(task?.description || '');
-  
+    // Ensure that your component handles the `null` case properly
+
+    const [title, setTitle] = useState(() => task?.title || '');
+    const [description, setDescription] = useState(() => task?.description || '');
+
+
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       if (title && description) {
@@ -25,26 +28,29 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onSave }) => {
     };
   
     return (
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="taskTitle">Title</label>
-        <input
-          id="taskTitle"
-          type="text"
-          placeholder="Task Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        {/* <label htmlFor="TaskDescription">Task Description</label> */}
-        <textarea
-          placeholder="Task Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <button type="submit">{task ? 'Update' : 'Add'} Task</button>
-      </form>
+      <div className='task-form'>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="taskTitle">Title</label>
+          <input
+            id="taskTitle"
+            type="text"
+            placeholder="Task Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          {/* <label htmlFor="TaskDescription">Task Description</label> */}
+          <textarea
+            placeholder="Task Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <button type="submit">{task ? 'Update' : 'Add'} Task</button>
+        </form>
+      </div>
+      
     );
-  };
+};
   
-  export default TaskForm;
+export default TaskForm;

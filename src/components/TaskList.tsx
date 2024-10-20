@@ -13,6 +13,12 @@ interface TaskListProps {
 
 const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggleComplete, onEdit }) => {
   // This function renders each row using react-window
+
+
+  if (!tasks) {
+    return <div>No task created</div>;
+  }
+  
   const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => (
     <div style={{ ...style, padding: '10px', boxSizing: 'border-box' }}> {/* Ensure proper padding and sizing */}
       <TaskItem

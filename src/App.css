@@ -1,13 +1,75 @@
 /* src/App.css */
 .App {
+
   text-align: center;
   font-family: Arial, sans-serif;
+  justify-content: center;
+  align-content: center; 
+  overflow: hidden;
+}
+
+/* Style the video to cover the entire viewport */
+#background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Ensures the video fills the entire background */
+  z-index: -1;        /* Sends the video behind other content */
+}
+
+/* Ensure that content remains visible on top of the video */
+.video-container {
+  position: relative;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  /* color: white; */
+  /* text-align: center; */
+  padding: 20px;
+}
+form > label {
+  color: white;
+  font-weight: bold;
+
+}
+
+.intro {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  #background-video {
+    display: none;
+  }
+  .content {
+    background: url('./../assets/bk/bk-medium.mp4') no-repeat center center;
+    background-size: cover;
+  }
+}
+
+
+.task-form {
+  display: flex;
+  justify-content: center; 
+  /* width: 100%; */
+  /* align-items: center;    */
+  /* align-content: center;    */
+  /* height: 100vh;   */
+  
 }
 
 form {
-  align-self: center;
+  align-self: center !important;
   margin: 20px 0;
+  /* justify-content: center; */
 }
+
+
 
 input,
 textarea {
@@ -16,6 +78,7 @@ textarea {
   padding: 10px;
   width: 100%;
   max-width: 400px;
+  min-width: 350px;
 }
 
 button {
@@ -24,13 +87,27 @@ button {
 }
 
 .task-item {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.7);
   padding: 10px;
   margin-bottom: 10px;
+ 
+}
+
+.task-content {
+  /* display: flex; */
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 600px;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .task-item.completed {
-  background-color: #e0ffe0;
+  background-color: rgba(224, 255, 224, 0.7); /* Light green with 50% opacity */
+  /* opacity: 0.5; */
   text-decoration: line-through;
 }
 

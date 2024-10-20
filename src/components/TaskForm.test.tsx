@@ -5,7 +5,8 @@ import TaskForm from './TaskForm.tsx';
 
 test('renders TaskForm and allows adding a task', () => {
   const handleSave = jest.fn();
-  render(<TaskForm onSave={handleSave} />);
+  render(<TaskForm task={null} onSave={handleSave} />);
+
 
   const titleInput = screen.getByPlaceholderText(/task title/i);
   const descriptionInput = screen.getByPlaceholderText(/task description/i);
