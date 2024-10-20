@@ -1,3 +1,4 @@
+// src/components/TaskItem.tsx
 import React from 'react';
 import { Task } from '../types/Task';
 
@@ -11,13 +12,17 @@ interface TaskItemProps {
 const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, onToggleComplete, onEdit }) => {
   return (
     <div className={`task-item ${task.completed ? 'completed' : ''}`}>
-      <h3>{task.title}</h3>
-      <p>{task.description}</p>
-      <button onClick={() => onToggleComplete(task.id)} aria-label="Mark task as complete">
-        {task.completed ? 'Mark as Incomplete' : 'Mark as Complete'}
-      </button>
-      <button onClick={() => onEdit(task)}>Edit</button>
-      <button onClick={() => onDelete(task.id)}>Delete</button>
+      <div className="task-content">
+        <h3 className="task-title">{task.title}</h3>
+        <p className="task-description">{task.description}</p>
+      </div>
+      <div className="task-buttons">
+        <button onClick={() => onToggleComplete(task.id)}>
+          {task.completed ? 'Undo' : 'Complete'}
+        </button>
+        <button onClick={() => onEdit(task)}>Edit</button>
+        <button onClick={() => onDelete(task.id)}>Delete</button>
+      </div>
     </div>
   );
 };

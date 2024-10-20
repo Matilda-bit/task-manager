@@ -1,0 +1,39 @@
+/* src/components/TaskItem.css
+.task-item {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px;
+    border-bottom: 1px solid #ddd; 
+    box-sizing: border-box;
+  }
+  
+  .task-content {
+    flex-grow: 1; 
+  }
+  
+  .task-title {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .task-description {
+    margin: 5px 0;
+  }
+  
+  .task-buttons {
+    display: flex;
+    gap: 10px; 
+  }
+  
+  button {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  
+
+  .task-item.completed {
+    background-color: #e0ffe0;
+    text-decoration: line-through;
+  }
+   */
