@@ -26,13 +26,16 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onSave }) => {
   
     return (
       <form onSubmit={handleSubmit}>
+        <label htmlFor="taskTitle">Title</label>
         <input
+          id="taskTitle"
           type="text"
           placeholder="Task Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
+        {/* <label htmlFor="TaskDescription">Task Description</label> */}
         <textarea
           placeholder="Task Description"
           value={description}

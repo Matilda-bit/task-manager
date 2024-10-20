@@ -1,7 +1,7 @@
 // src/components/TaskForm.test.tsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import TaskForm from './TaskForm';
+import TaskForm from './TaskForm.tsx';
 
 test('renders TaskForm and allows adding a task', () => {
   const handleSave = jest.fn();

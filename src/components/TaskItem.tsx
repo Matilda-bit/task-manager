@@ -13,7 +13,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, onToggleComplete, o
     <div className={`task-item ${task.completed ? 'completed' : ''}`}>
       <h3>{task.title}</h3>
       <p>{task.description}</p>
-      <button onClick={() => onToggleComplete(task.id)}>
+      <button onClick={() => onToggleComplete(task.id)} aria-label="Mark task as complete">
         {task.completed ? 'Mark as Incomplete' : 'Mark as Complete'}
       </button>
       <button onClick={() => onEdit(task)}>Edit</button>
