@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Task } from '../types/Task';
-import { addTask } from '../api/taskApi'; // Import API function
+import { useDispatch } from 'react-redux';
+import { addTask as addTaskThunk, updateTask as updateTaskThunk } from '../redux/taskSlice'; // Import Redux thunks
+import { AppDispatch } from '../redux/store'; // Import the AppDispatch type
 
 interface TaskFormProps {
   task: Task | null;
@@ -11,6 +13,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onSave }) => {
   const [title, setTitle] = useState(() => task?.title || '');
   const [description, setDescription] = useState(() => task?.description || '');
   const [completed, setCompleted] = useState(false);
+  const dispatch = useDispatch<AppDispatch>(); // Explicitly type dispatch as AppDispatch
+
 
   useEffect(() => {
     if (task) {
@@ -30,18 +34,28 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onSave }) => {
         completed,
       };
       if (!task) {
-        // Add a new task if it's a new task
+        // Dispatch addTask if it's a new task
         try {
-          const response = await addTask(newTask); // API call to add task
-          onSave(response.data); // Pass the added task back to the parent
+          const actionResult = await dispatch(addTaskThunk(newTask)); // Dispatching addTaskThunk action
+          if (addTaskThunk.fulfilled.match(actionResult)) {
+            onSave(actionResult.payload); // On success, pass the added task back to the parent
+          }
         } catch (error) {
           console.error('Error adding task:', error);
         }
       } else {
-        // Update the existing task
-        onSave(newTask);
+        // Dispatch updateTask if it's an existing task
+        try {
+          const actionResult = await dispatch(updateTaskThunk(newTask)); // Dispatching updateTaskThunk action
+          if (updateTaskThunk.fulfilled.match(actionResult)) {
+            onSave(actionResult.payload); // On success, pass the updated task back to the parent
+          }
+        } catch (error) {
+          console.error('Error updating task:', error);
+        }
       }
     }
+    
   };
 
   return (

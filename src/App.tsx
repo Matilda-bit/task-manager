@@ -1,92 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { Task } from './types/Task';
+// src/App.tsx
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
-import { fetchTasks, addTask, updateTask, deleteTask } from './api/taskApi'; // Import API functions
+import { addTask, fetchAllTasks, updateTask as updateTaskThunk, deleteTask as deleteTaskThunk } from './redux/taskSlice';
+import { Task } from './types/Task';
 import './App.css';
+import { AppDispatch, RootState } from './redux/store';
 
 const App: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
-  // Fetch tasks from API on component mount and whenever a task is added or deleted
-  const fetchAllTasks = () => {
-    fetchTasks()
-      .then((response) => {
-        setTasks(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching tasks:', error);
-      });
-  };
+  const dispatch = useDispatch<AppDispatch>(); // Typed dispatch
+  const tasks = useSelector((state: RootState) => state.tasks.tasks); // Typed selector
+  const taskStatus = useSelector((state: RootState) => state.tasks.status);
 
   useEffect(() => {
-    fetchAllTasks(); // Initial fetch on mount
-  }, []);
+    if (taskStatus === 'idle') {
+      dispatch(fetchAllTasks());
+    }
+  }, [taskStatus, dispatch]);
 
-  // Add or update task
   const addOrUpdateTask = (task: Task) => {
     if (task.id) {
-      // Update task
-      updateTask(task)
-        .then((response) => {
-          setTasks((prevTasks) =>
-            prevTasks.map((t) => (t.id === task.id ? task : t))
-          );
-        })
-        .catch((error) => {
-          console.error('Error adding task:', error);
-        });
+      dispatch(updateTaskThunk(task));
     } else {
-      // Add new task
-      addTask(task)
-        .then((response) => {
-          setTasks((prevTasks) => [...prevTasks, response.data]);
-
-        })
-        .catch((error) => {
-          console.error('Error adding task:', error);
-        });
+      dispatch(addTask(task));
     }
+
     setEditingTask(null);
-    fetchAllTasks();
   };
 
-  // Delete task
   const removeTask = (id: number) => {
-    console.log(`Requesting to delete task with ID: ${id}`); // Debug log
-    console.log(tasks);
-    deleteTask(id)
-      .then(() => {
-        setTasks((prevTasks) => prevTasks.filter((task) => {
-          console.log(prevTasks);
-
-          console.log(task.id, + " " + id,  + " " + ((task.id !== id)? "true" : "false") );
-          return task.id !== id;
-        }
-          ));
-      })
-      .catch((error) => {
-        console.error('Error deleting task:', error);
-      });
-
-      fetchAllTasks();
-  };
-
-  const toggleCompleteTask = (id: number) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
-    fetchAllTasks();
+    dispatch(deleteTaskThunk(id));
   };
 
   return (
     <div className="App">
       <div className="video-container">
         <video autoPlay muted loop id="background-video">
-          <source src="https://cdn.pixabay.com/video/2022/06/13/120172-720504774_medium.mp4" type="video/mp4" />
+          <source
+            src="https://cdn.pixabay.com/video/2022/06/13/120172-720504774_medium.mp4"
+            type="video/mp4"
+          />
           <source src="./../assets/bk/bk-medium.webm" type="video/webm" />
           <source src="./../assets/bk/bk-medium.ogv" type="video/ogg" />
           Your browser does not support the video tag.
@@ -100,11 +56,10 @@ const App: React.FC = () => {
 
           <TaskForm task={editingTask} onSave={addOrUpdateTask} />
           <TaskList
-            tasks={tasks}
-            onDelete={removeTask}
-            reloadTasks={fetchAllTasks}
-            onEdit={setEditingTask}
-           
+             tasks={tasks}
+             onDelete={removeTask}
+             reloadTasks={() => dispatch(fetchAllTasks())}
+             onEdit={setEditingTask}
           />
         </div>
       </div>
