@@ -9,6 +9,7 @@ interface TaskListProps {
   onDelete: (id: number) => void;
   onToggleComplete: (id: number) => void;
   onEdit: (task: Task) => void;
+  // reloadList: () => void;
 }
 
 const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggleComplete, onEdit }) => {
@@ -18,7 +19,9 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggleComplete, 
   if (!tasks) {
     return <div>No task created</div>;
   }
-  
+
+
+
   const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => (
     <div style={{ ...style, padding: '10px', boxSizing: 'border-box' }}> {/* Ensure proper padding and sizing */}
       <TaskItem
