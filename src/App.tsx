@@ -79,7 +79,7 @@ const App: React.FC = () => {
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
-    // fetchAllTasks();
+    fetchAllTasks();
   };
 
   return (
@@ -102,7 +102,7 @@ const App: React.FC = () => {
           <TaskList
             tasks={tasks}
             onDelete={removeTask}
-            onToggleComplete={toggleCompleteTask}
+            reloadTasks={fetchAllTasks}
             onEdit={setEditingTask}
            
           />
